@@ -29,16 +29,21 @@ public class Io {
 			while ((dumpLine = brDump.readLine()) != null) {
 				if(dumpLine.startsWith(RID))
 				{
-					write(dumpLine.replaceAll("rid=", "").replaceAll("n1=", "").replaceAll("n2=", "").replaceAll("t=", "").replaceAll("w=", "").replaceAll("\"", "") + "\n","bridge",true);
+					//write(dumpLine.replaceAll("rid=", "").replaceAll("n1=", "").replaceAll("n2=", "").replaceAll("t=", "").replaceAll("w=", "").replaceAll("\"", "") + "\n","bridge",true);
+					write(dumpLine.replaceAll("rid=|n1=|n2=|t=|w=|\"", "")+ "\n","bridge",true);
 				}
 				else if(dumpLine.startsWith(EID))
 				{
-					write(dumpLine.replaceAll("eid=", "").replaceAll("n=", "").replaceAll("t=", "").replaceAll("w=", "").replaceAll("\"", "") + "\n","node",true);
+					//write(dumpLine.replaceAll("eid=", "").replaceAll("n=", "").replaceAll("t=", "").replaceAll("w=", "").replaceAll("\"", "") + "\n","node",true);
+					write(dumpLine.replaceAll("eid=|n=|t=|w=|\"", "")+ "\n","node",true);
 				}
 				else if(dumpLine.startsWith(RTID))
 				{
-					write(dumpLine.replaceAll("rtid=", "").replaceAll("name=", "").replaceAll("info=", "").replaceAll("\"", "")+ "\n","relationship",true);
+					//write(dumpLine.replaceAll("rtid=", "").replaceAll("name=", "").replaceAll("info=", "").replaceAll("\"", "")+ "\n","relationship",true);
+					write(dumpLine.replaceAll("rtid=|name=|info=|\"", "")+ "\n","relationship",true);
+
 				}
+				//if (!(dumpLine.startsWith("//")) && ((dumpLine.startsWith(RTID)) || (dumpLine.startsWith(RID)) || (dumpLine.startsWith(EID)))) write(dumpLine.replaceAll("rid=|n1=|n2=|t=|w=|\"|eid=|n=|rtid=|name=|info=", "")+ "\n","dump",true);
 			}
 			
 			brDump.close();
