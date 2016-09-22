@@ -20,9 +20,9 @@ public class Main {
         // on lis le fichier
         Io io = new Io();
 
-        io.write( io.relationship, "relationship", false );
-        io.write( io.node, "node", false );
-        io.write( io.bridge, "bridge", false );
+        io.write( io.relationship, "relationship.txt", false );
+        io.write( io.node, "node.txt", false );
+        io.write( io.bridge, "bridge.txt", false );
 
         // io.write("", "dump", false);
         io.read( rep );
