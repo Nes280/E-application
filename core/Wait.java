@@ -1,3 +1,4 @@
+package core;
 
 public class Wait extends Thread {
 
@@ -13,12 +14,7 @@ public class Wait extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            String a = "|";
-            String b = "-";
-            System.out.print(a+'\b');
-            System.out.print(b+'\b');
-            //System.out.printf("\r", " -");
-            //System.out.printf("\r", " \\");
+            System.out.print( " ." );
             // System.out.flush();
         }
     }
