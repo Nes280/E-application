@@ -41,7 +41,7 @@ public class Main {
 		String logo="";
 		try {
 			
-			// Ouverture de dump
+			// Ouverture du fichier logo.txt
 			InputStream ipsDump = new FileInputStream("D:\\Users\\Niels\\Documents\\GitHub\\E-application\\core\\logo.txt");
 			InputStreamReader ipsrDump = new InputStreamReader(ipsDump);
 			BufferedReader brDump = new BufferedReader(ipsrDump);
