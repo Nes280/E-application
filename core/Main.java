@@ -2,13 +2,14 @@ package core;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IOException {
         logo();
         // on demande a l'utilisateur ou est le fichier
         Scanner path = new Scanner( System.in );
@@ -22,10 +23,6 @@ public class Main {
 
         // on lis le fichier
         Io io = new Io();
-
-        io.write( io.relationship, "relationship.csv", false );
-        io.write( io.node, "node.csv", false );
-        io.write( io.bridge, "bridge.csv", false );
 
         // io.write("", "dump", false);
         io.read( rep );
