@@ -10,37 +10,38 @@ import java.util.Scanner;
 public class Main {
 
     public static void main( String[] args ) throws IOException {
-        logo();
+        //Affichage du logo
+    	logo();
+        
         // on demande a l'utilisateur ou est le fichier
         Scanner path = new Scanner( System.in );
         System.out.println( "Merci de donner le chemin absolu du fichier a traiter." );
         String rep = path.nextLine();
-
-        // on initialise le thread wait pour s'assurer que le travail est en
-        // cours
-        // Wait w = new Wait();
-        // w.start();
-
-        // on lis le fichier
+        
+        //preparation du calcule de la duree d'execution
+        long debut = System.currentTimeMillis();
+        
+        System.out.print("Execution du programme en cours...");
+        
+        // on cree un objet Io puis on appel la methode read()
+        // qui va lire et envoyer chaques lignes a write()
+        //pour l'ecrire dirrectement dans une fichier.
         Io io = new Io();
-
-        // io.write("", "dump", false);
-        io.read( rep );
-
+        io.readAndWrite( rep );
         path.close();
-        // w.stop();
-        System.out.println( "\n\nDone" );
-
+        
+        //Affiche la durée d'exécution en secondes
+        long temps =  (System.currentTimeMillis()-debut)/1000;
+        System.out.print( "\n\nFait en " + temps +"secondes");
     }
 
+    //Affiche un logo aucune utilitee particuliere .. 
     public static void logo() {
         String logo = "";
         try {
 
-            // Ouverture du fichier logo.txt
-            // InputStream ipsDump = new
-            // FileInputStream("D:\\Users\\Niels\\Documents\\GitHub\\E-application\\core\\logo.txt");
-            InputStream ipsDump = new FileInputStream( "/Users/niels/E-application/core/logo.txt" );
+            // Ouverture du fichier logo.txt 
+        	InputStream ipsDump = new FileInputStream("logo.txt");
             InputStreamReader ipsrDump = new InputStreamReader( ipsDump );
             BufferedReader brDump = new BufferedReader( ipsrDump );
 
@@ -55,5 +56,4 @@ public class Main {
             System.out.println( e.toString() );
         }
     }
-
 }

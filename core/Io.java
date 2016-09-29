@@ -12,90 +12,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Io {
-    public String RTID         = "rtid=";
-    public String EID          = "eid=";
-    public String RID          = "rid=";
+    public String RTID = "rtid=";
+    public String EID = "eid=";
+    public String RID = "rid=";
 
-    String        dumpLine;
-    String        relationship = "";
-    String        node         = "";
-    String        bridge       = "";
+    String dumpLine;
+    String relationship = "";
+    String node = "";
+    String bridge = "";
 
-    List<String>  liste        = new ArrayList<String>();
-    PrintWriter   fichierSortie3;
-    PrintWriter   fichierSortie2;
-    PrintWriter   fichierSortie1;
+    List<String> liste = new ArrayList<String>();
+    PrintWriter fichierSortie3;
+    PrintWriter fichierSortie2;
+    PrintWriter fichierSortie1;
 
     public Io() throws IOException {
+    	//buffer du fichier relationship.csv
         FileWriter fw1 = new FileWriter( "relationship.csv", true );
         BufferedWriter bw1 = new BufferedWriter( fw1 );
         fichierSortie1 = new PrintWriter( bw1 );
 
+        //buffer du fichier node.csv
         FileWriter fw2 = new FileWriter( "node.csv", true );
         BufferedWriter bw2 = new BufferedWriter( fw2 );
         fichierSortie2 = new PrintWriter( bw2 );
 
+        //buffer du fichier bridge.csv
         FileWriter fw3 = new FileWriter( "bridge.csv", true );
         BufferedWriter bw3 = new BufferedWriter( fw3 );
         fichierSortie3 = new PrintWriter( bw3 );
     }
 
-    public void read( String path ) {
+    public void readAndWrite( String path ) {
 
         try {
-            // Ouverture de dump
+            // Ouverture d'un buffer dans le fichier cible
             InputStream ipsDump = new FileInputStream( path );
             InputStreamReader ipsrDump = new InputStreamReader( ipsDump );
             BufferedReader brDump = new BufferedReader( ipsrDump );
 
             while ( ( dumpLine = brDump.readLine() ) != null ) {
-                if ( dumpLine.startsWith( RID ) ) {
-                    // write(dumpLine.replaceAll("rid=", "").replaceAll("n1=",
-                    // "").replaceAll("n2=", "").replaceAll("t=",
-                    // "").replaceAll("w=", "").replaceAll("\"", "") +
-                    // "\n","bridge",true);
-                    write( dumpLine.replaceAll( "rid=|n1=|n2=|t=|w=|\"", "" ).replaceAll( "[|]", ";" ) + "\n",
-                            fichierSortie3 );
-                } else if ( dumpLine.startsWith( EID ) ) {
-                    // write(dumpLine.replaceAll("eid=", "").replaceAll("n=",
-                    // "").replaceAll("t=", "").replaceAll("w=",
-                    // "").replaceAll("\"", "") + "\n","node",true);
+                if ( dumpLine.startsWith( RID ) ) { // si on lis une arete
+                	
+                	// alors on supprime ce qui n'est pas utile est on ecrit dans le fichier bridge.csv
+                	fichierSortie3.print( dumpLine.replaceAll( "rid=|n1=|n2=|t=|w=|\"", "" ) + "\n");
+                    
+                } else if ( dumpLine.startsWith( EID ) ) {//si on lis un noeud
+                	
+                	//on supprime ce qui est inutile
                     dumpLine = dumpLine.replaceAll( "eid=|n=|t=|w=|\"|nf=", "" );
 
                     // on split une ligne dans une liste
                     for ( String retval : dumpLine.split( "[|]" ) ) {
                         liste.add( retval );
-                        // System.out.println(liste.size() + " ---> "+ retval);
                     }
-                    // System.out.println(liste.size() );
+                    
                     if ( liste.size() == 5 ) // si on a 5 elements c'est que on
                                              // a un nf dans cette ligne
                     {
                         // System.out.println("set "+liste.get(4)+" to "+liste);
-                        liste.set( 1, liste.get( 4 ) ); // on remplace le code
-                                                        // par sa valeur
+                        liste.set( 1, liste.get( 4 ) ); // on remplace le code par sa valeur 
 
                     }
 
-                    write( liste.get( 0 ) + ";" + liste.get( 1 ) + ";" + liste.get( 2 ) + ";" + liste.get( 3 ) + "\n",
-                            fichierSortie2 );
+                    // on recompose les element de la liste que l'on ecrit dans le fichier node.csv
+                    fichierSortie2.print( liste.get( 0 ) + "|" + liste.get( 1 ) + "|" + liste.get( 2 ) + "|" + liste.get( 3 ) + "\n");
 
+                    //on efface le contenu de la liste pour eventuellement traiter une nouvelle ligne
                     liste.clear();
-                } else if ( dumpLine.startsWith( RTID ) ) {
-                    // write(dumpLine.replaceAll("rtid=",
-                    // "").replaceAll("name=", "").replaceAll("info=",
-                    // "").replaceAll("\"", "")+ "\n","relationship",true);
-                    write( dumpLine.replaceAll( "rtid=|name=|info=|\"", "" ).replaceAll( "[|]", ";" ) + "\n",
-                            fichierSortie1 );
+                    
+                } else if ( dumpLine.startsWith( RTID ) ) {//si on lis une relation
+                	
+                	// alors on supprime ce qui n'est pas utile est on ecrit dans le fichier relationship.csv 
+                	fichierSortie1.print( dumpLine.replaceAll( "rtid=|name=|info=|\"", "" ) + "\n" );
 
                 }
-                // if (!(dumpLine.startsWith("//")) &&
-                // ((dumpLine.startsWith(RTID)) || (dumpLine.startsWith(RID)) ||
-                // (dumpLine.startsWith(EID))))
-                // write(dumpLine.replaceAll("rid=|n1=|n2=|t=|w=|\"|eid=|n=|rtid=|name=|info=",
-                // "")+ "\n","dump",true);
             }
 
+            //le traitement est termine, donc on ferme tout ce qui a ete ouvert
             brDump.close();
             fichierSortie3.close();
             fichierSortie2.close();
@@ -105,13 +99,4 @@ public class Io {
             System.out.println( e.toString() );
         }
     }
-
-    public void write( String content, PrintWriter p ) {
-        try {
-            p.print( content );
-        } catch ( Exception e ) {
-            System.out.println( e.toString() );
-        }
-    }
-
 }
