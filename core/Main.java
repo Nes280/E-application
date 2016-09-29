@@ -30,7 +30,7 @@ public class Main {
         io.readAndWrite( rep );
         path.close();
         
-        //Affiche la durée d'exécution en secondes
+        //Affiche la duree d'execution en secondes
         long temps =  (System.currentTimeMillis()-debut)/1000;
         int minutes = (int) (temps/60);
         int secondes = (int) (temps%60);
