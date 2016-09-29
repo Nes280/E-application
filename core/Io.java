@@ -97,6 +97,9 @@ public class Io {
             }
 
             brDump.close();
+            fichierSortie3.close();
+            fichierSortie2.close();
+            fichierSortie1.close();
 
         } catch ( Exception e ) {
             System.out.println( e.toString() );
