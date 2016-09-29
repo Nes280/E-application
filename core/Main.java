@@ -32,7 +32,9 @@ public class Main {
         
         //Affiche la durée d'exécution en secondes
         long temps =  (System.currentTimeMillis()-debut)/1000;
-        System.out.print( "\n\nFait en " + temps +"secondes");
+        int minutes = (int) (temps/60);
+        int secondes = (int) (temps%60);
+        System.out.print( "\nFait en " + minutes + " minute(s) et " + secondes +" seconde(s).\n");
     }
 
     //Affiche un logo aucune utilitee particuliere .. 
